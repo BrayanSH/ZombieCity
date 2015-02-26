@@ -857,10 +857,7 @@ class ZombieCity extends PluginBase implements Listener{
 	$zom = &$this->zombie[$zo->getId()];
 	$zo->knockBack($p, 0, - $zom['xxx'] * 15, - $zom['zzz'] * 15, 0.4);
 	//var_dump("玩家".$p->getName()."攻击了ID为".$zo->getId()."的僵尸");
-	$zom['x'] = $zom['x'] - $zom['xxx'] * 15;
-	$zom['y'] = $zo->getY();
-	$zom['z'] = $zom['z'] - $zom['zzz'] * 15;
-	$pos2 = new Vector3 ($zom['x'],$zom['y'],$zom['z']);  //目标坐标
+	$pos2 = new Vector3 ($zo->getX(),$zo->getY(),$zo->getZ());  //目标坐标
 	$zo->setPosition($pos2);
 	}
 	}
@@ -1001,7 +998,7 @@ class ZombieCity extends PluginBase implements Listener{
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				$p->setHealth(20);
 				$p->teleport($this->waitpos2);
-		}j
+		}
 				$this->zombie = array();
 				$this->players = array();
 				$this->gameststus = "prepare";
@@ -1237,6 +1234,7 @@ class ZombieCity extends PluginBase implements Listener{
 	$p['Isonline'] = 1;
 	Server::getInstance()->broadcastMessage(TextFormat::RED."玩家".$event->getPlayer()->getName()."重连了");
 	$pl->teleport($this->spos);
+	}
 	}
 	
 	public function onDisable(){
