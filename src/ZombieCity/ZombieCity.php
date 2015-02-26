@@ -1001,7 +1001,7 @@ class ZombieCity extends PluginBase implements Listener{
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				$p->setHealth(20);
 				$p->teleport($this->waitpos2);
-		}j
+		}
 				$this->zombie = array();
 				$this->players = array();
 				$this->gameststus = "prepare";
