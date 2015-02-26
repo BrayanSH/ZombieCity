@@ -1,0 +1,15 @@
+name: ZombieCity
+version: 1.2.0
+api: [1.0.0]
+author: Zzm
+description: ZombieCity! Hit Zombies!
+main: ZombieCity\ZombieCity
+commands:
+ zomset:
+  description: ZombieCity Command
+  usage: "Usage: /zomset <set/del> set/del config"
+  permission: Zzm.command.zomset
+permissions:
+ Zzm.command.zomset:
+  description: "Only OP can use CMD : /zomset "
+  default: op
