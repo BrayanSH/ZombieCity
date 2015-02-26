@@ -847,7 +847,7 @@ class ZombieCity extends PluginBase implements Listener{
 	$zo = $event->getEntity();
 	if(isset($this->zombie[$zo->getId()])){	
 	
-	var_dump($this->firsthurt);
+	//var_dump($this->firsthurt);
     if($this->firsthurt > 0){
 		Server::getInstance()->broadcastMessage(TextFormat::BLUE."玩家 ".$p->getName()."完成了第一次攻击");
 		$this->firsthurt = 0 ;
