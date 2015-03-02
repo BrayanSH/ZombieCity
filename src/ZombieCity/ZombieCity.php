@@ -113,7 +113,7 @@ class ZombieCity extends PluginBase implements Listener{
 				switch ($args[0]) {
 					case 'set':
 						if($this->config->getAll() !==  array()){
-							$sender->sendMessage("小游戏 *僵尸围城* 已经设置,请使用命令 : /dttt del 来删除设置!");
+							$sender->sendMessage("小游戏 *僵尸围城* 已经设置,请使用命令 : /zomset del 来删除设置!");
 						}else{
 							$name = $sender->getName();
 							$this->SetStatus[$name] = 0;
@@ -622,30 +622,8 @@ class ZombieCity extends PluginBase implements Listener{
 				}
 				else {
 				
-				$xxx = 0.07;
-				$zzz = 0.07;
-				$posz1 = new Vector3 ($zo->getX() + $xxx, $zo->getY(), $zo->getZ());
-					if($p->distance($pos) > $p->distance($posz1)){
-					$xxx = 0.07;
-					}
-					if($p->distance($pos) == $p->distance($posz1)){
-					$xxx = 0;
-					}
-					if($p->distance($pos) < $p->distance($posz1)){
-					$xxx = -0.07;
-					}
-				$posz2 = new Vector3 ($zo->getX()+ $xxx, $zo->getY(), $zo->getZ() + $zzz);
-					if($p->distance($pos) < $p->distance($posz2)){
-					$zzz = -0.07;
-					}
-					if($p->distance($pos) == $p->distance($posz2)){
-					$zzz = 0;
-					}
-					if($p->distance($pos) > $p->distance($posz2)){
-					$zzz = 0.07;
-					}
 				
-				/*
+				
 					//还不如用旧算法了。。
 					$zx =floor($zo->getX());
 					$zZ = floor($zo->getZ());
@@ -684,7 +662,7 @@ class ZombieCity extends PluginBase implements Listener{
 					if ($xxx == 0 and $zzz == 0) {
 						$xxx = 0.1;
 					}
-					*/
+					
 					$zom['xxx'] = $xxx * 10;
 					$zom['zzz'] = $zzz * 10;
 					
@@ -855,7 +833,7 @@ class ZombieCity extends PluginBase implements Listener{
 	
 	
 	$zom = &$this->zombie[$zo->getId()];
-	$zo->knockBack($p, 0, - $zom['xxx'] * 15, - $zom['zzz'] * 15, 0.4);
+	$zo->knockBack($p, 0, - $zom['xxx'] * 5, - $zom['zzz'] * 5, 0.4);
 	//var_dump("玩家".$p->getName()."攻击了ID为".$zo->getId()."的僵尸");
 	$pos2 = new Vector3 ($zo->getX(),$zo->getY(),$zo->getZ());  //目标坐标
 	$zo->setPosition($pos2);
@@ -902,7 +880,7 @@ class ZombieCity extends PluginBase implements Listener{
 	
 	public function gametimer() {
 	if($this->gameststus == "prepare"){
-		if(count($this->players) >= 1){
+		if(count($this->players) >= 5){
 			foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				$p->sendmessage("人员已满，游戏即将开始，请做好准备！");
