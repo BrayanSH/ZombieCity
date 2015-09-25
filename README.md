@@ -15,10 +15,14 @@
 - To join game,use:
 - Join game
 - ZombieCity
+- Blank or anything you like
+- Blank or anything you like
 - ==================================================
 - To Quit game,use:
 - Qoin game
 - ZombieCity
+- Blank or anything you like
+- Blank or anything you like
 - ==================================================
 - Notice:
 - 
