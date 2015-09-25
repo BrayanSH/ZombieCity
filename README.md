@@ -4,9 +4,7 @@
 - added Skeletons
 - added some other things like health heal and no team hurt
 - fiexd some bugs
-- 
 - ==================================================
-- 
 - commands:
 - 
 - /zomset set set the field
