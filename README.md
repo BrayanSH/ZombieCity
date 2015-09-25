@@ -19,7 +19,7 @@
 - Blank or anything you like
 - ==================================================
 - To Quit game,use:
-- Qoin game
+- Qoit game
 - ZombieCity
 - Blank or anything you like
 - Blank or anything you like
