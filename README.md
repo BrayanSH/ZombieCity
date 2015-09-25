@@ -9,6 +9,8 @@
 - /zomset set set the field
 - /zomset del delete the field 
 - 
+- ==================================================
+- 
 - signs:
 - To join game,use:
 - Join game
