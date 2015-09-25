@@ -127,11 +127,11 @@ class ZombieCity extends PluginBase implements Listener{
 				switch ($args[0]) {
 					case 'set':
 						if($this->config->getAll() !==  array()){
-							$sender->sendmessage("小游戏 *僵尸围城* 已经设置,请使用命令 : /zomset del 来删除设置!");
+							$sender->sendmessage("Game *ZombieCity* has been set,please use : /zomset del to delete the config");
 						}else{
 							$name = $sender->getName();
 							$this->SetStatus[$name] = 0;
-							$sender->sendmessage("你已经处于设置状态下,请先设置状态牌");
+							$sender->sendmessage("You are in setting mode, please set the status sign");
 						}
 						break;
 
@@ -144,11 +144,11 @@ class ZombieCity extends PluginBase implements Listener{
 						unset($this->zpos3);
 						unset($this->zpos4);
 						unset($this->zpos5);
-						$sender->sendmessage("清除了小游戏 *僵尸围城* 的设置");
+						$sender->sendmessage("delete the config of  *ZombieCity*");
 						break;
 
 					default:
-						$sender->sendtip("命令 : /zomset <set/del>");
+						$sender->sendtip("command : /zomset <set/del>");
 						break;
 				}
 				return true;
@@ -174,11 +174,11 @@ class ZombieCity extends PluginBase implements Listener{
 						if($this->repeattime[$pn] >= 3){
 							if($p->getHealth() < 20 ){
 								$p->setHealth($p->getHealth() + 2);
-								$p->sendtip(TextFormat::RED."回血中。。。");
+								$p->sendtip(TextFormat::RED."Healing...");
 								foreach($this->players as $pl){
 									$pp = $this->getServer()->getPlayer($pl["id"]);
 									if($pp != false and $pp != $p){
-										$pp->sendtip(TextFormat::YELLOW."玩家".$pn."正在回血，快去保护他/她");
+										$pp->sendtip(TextFormat::YELLOW."Player".$pn."is healing himself,Please protect him/her");
 									}
 								}
 							}
@@ -1355,10 +1355,10 @@ class ZombieCity extends PluginBase implements Listener{
 			foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				if($p != false){
-				$p->sendtip("干掉了一个僵尸,剩余玩家:".count($this->players).",剩余僵尸:".count($this->zombie).",剩余时间:".$this->gametime."秒.");
+				$p->sendtip("killed one zombie.Players left:".count($this->players).",Zombies left:".count($this->zombie).",Time left:".$this->gametime."S.");
 				}	
 					$SignVector3 = $this->tile;
-					$event->getEntity()->getLevel()->getTile($SignVector3)->setText("僵尸围城","游戏状态:已开始","当前玩家数量:".count($this->players),"当前僵尸数量:".count($this->zombie));
+					$event->getEntity()->getLevel()->getTile($SignVector3)->setText("ZombieCity","Status:Started","Online players:".count($this->players),"Zombies left:".count($this->zombie));
 			}
 		}
 	//var_dump($this->zombie);
@@ -1369,10 +1369,10 @@ class ZombieCity extends PluginBase implements Listener{
 			foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				if($p != false){
-				$p->sendtip("干掉了一个骷髅,剩余玩家:".count($this->players).",剩余骷髅:".count($this->Skeleton).",剩余时间:".$this->gametime."秒.");
+				$p->sendtip("killed one skeleton:".count($this->players).",Skeletons left:".count($this->Skeleton).",Time left:".$this->gametime."S.");
 				}	
 					$SignVector3 = $this->tile;
-					$event->getEntity()->getLevel()->getTile($SignVector3)->setText("僵尸围城","游戏状态:已开始|第二轮","当前玩家数量:".count($this->players),"当前骷髅数量:".count($this->Skeleton));
+					$event->getEntity()->getLevel()->getTile($SignVector3)->setText("ZombieCity","Status:Started|Round2","Online Players:".count($this->players),"Skeletons left:".count($this->Skeleton));
 			}
 		}
 	//var_dump($this->Skeleton);
@@ -1386,8 +1386,6 @@ class ZombieCity extends PluginBase implements Listener{
                 return;
             }
             $killer = $cause->getDamager()->getPlayer();
-           // $killer->sendMessage(TextFormat::RED . '[' . TextFormat::DARK_AQUA . '帝国之战' . TextFormat::RED . ']' . TextFormat::RESET . '成功击杀一只僵尸，获得一积分');
-           //fan $this->addPoint($killer->getName(), 1);
             return;
         }
 	}
@@ -1512,14 +1510,14 @@ class ZombieCity extends PluginBase implements Listener{
 			$zo = $event->getEntity();
 			if ($p instanceof Player and $zo instanceof Player) {
 				if(isset($this->players[$p->getName()]) and isset($this->players[$zo->getName()])){
-					$p->sendtip(TextFormat::RED."不要攻击队友");
+					$p->sendtip(TextFormat::RED."Don't attack your teammate");
 					$event->setCancelled();
 				}
 			}
 			if(isset($this->zombie[$zo->getId()])){
 				if ($p instanceof Player) {
 					 if($this->firsthurt > 0){
-					Server::getInstance()->broadcastMessage(TextFormat::BLUE."玩家 ".$p->getName()."完成了第一次攻击");
+					Server::getInstance()->broadcastMessage(TextFormat::BLUE."Player ".$p->getName()."get the first blood");
 					$this->firsthurt = 0 ;
 					}
 					$weapon = $p->getInventory()->getItemInHand()->getID();  //得到玩家手中的武器
@@ -1599,15 +1597,15 @@ class ZombieCity extends PluginBase implements Listener{
 	//var_dump($this->players);
 	$event->getEntity()->teleport($this->waitpos2);
 	$event->getEntity()->setHealth(20);
-	$event->getEntity()->sendMessage("很抱歉，你死了");
+	$event->getEntity()->sendMessage("You died");
 				if(count($this->players) > 0){
 					foreach($this->players as $pl){
 					$p = $this->getServer()->getPlayer($pl["id"]);
 					if($p != false){
-					$p->sendtip("一位玩家牺牲了,剩余玩家:".count($this->players).",剩余时间:".$this->gametime."秒.");
+					$p->sendtip("One player died,Player left:".count($this->players).",Time left:".$this->gametime."秒.");
 					}
 					$SignVector3 = $this->tile;
-					$event->getEntity()->getLevel()->getTile($SignVector3)->setText("僵尸围城","游戏状态:已开始","当前玩家数量:".count($this->players),"当前僵尸数量:".count($this->zombie));
+					$event->getEntity()->getLevel()->getTile($SignVector3)->setText("ZombieCity","Status:Started","Player left:".count($this->players),"Zombie left:".count($this->zombie));
 					}
 				}
 			}
@@ -1653,8 +1651,8 @@ class ZombieCity extends PluginBase implements Listener{
 			foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				if($p != false){
-				$p->sendtip("人员已满，游戏即将开始，请做好准备！");
-				$p->sendtip("享受这次游戏吧");
+				$p->sendtip("Game will start soon");
+				$p->sendtip("Enjoy the game");
 				$p->teleport($this->spos);
 				}
 			}
@@ -1668,7 +1666,7 @@ class ZombieCity extends PluginBase implements Listener{
 		if($this->gametime <= 0){
 		$this->gameststus = "finalwaiting";
 		$this->gametime = 5;
-		Server::getInstance()->broadcastMessage(TextFormat::GREEN."游戏开始!");
+		Server::getInstance()->broadcastMessage(TextFormat::GREEN."Game started!");
 		if($this->config->get("tile") == array()){
 			$this->tile = new Vector3($this->tile["x"],$this->tile["y"],$this->tile["z"]);
 			$this->zpos1 = new Vector3($this->zpos1["x"],$this->zpos1["y"],$this->zpos1["z"]);
@@ -1681,7 +1679,7 @@ class ZombieCity extends PluginBase implements Listener{
 			foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				if($p != false){
-				$p->sendtip("游戏开始，请杀光僵尸们！");
+				$p->sendtip("Game started,Kill the mobs!");
 				$p->setMaxHealth(20);
 				$p->setHealth(20);
 				$p->teleport($this->spos);
@@ -1690,7 +1688,7 @@ class ZombieCity extends PluginBase implements Listener{
 			}
 			$level=$this->getServer()->getLevelByName($this->level);
 			$SignVector3 = $this->tile;
-			$level->getTile($SignVector3)->setText("僵尸围城","游戏状态:已开始|第一轮","当前玩家数量:".count($this->players),"当前僵尸数量:".count($this->zombie));			
+			$level->getTile($SignVector3)->setText("ZombieCity","Status:started","Player left:".count($this->players),"Zombie Left:".count($this->zombie));			
 		}
 	}
 	if($this->gameststus == "finalwaiting"){
@@ -1703,7 +1701,7 @@ class ZombieCity extends PluginBase implements Listener{
 		foreach($this->players as $pl){
 			$p = $this->getServer()->getPlayer($pl["id"]);
 			if($p != false){
-			$p->sendtip("僵尸还有".$this->gametime."秒开始生成!");
+			$p->sendtip("Zombie will generating in".$this->gametime."seconds!");
 			}
 		}
 	}
@@ -1717,7 +1715,7 @@ class ZombieCity extends PluginBase implements Listener{
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				if($p != false){
 				//$p->setHealth(20);
-				$p->sendTip("一大波骷髅正在逼近");
+				$p->sendTip("Skeletons are coming");
 				$p->teleport($this->spos);
 			}
 		}
@@ -1725,7 +1723,7 @@ class ZombieCity extends PluginBase implements Listener{
 		$this->gameststus = "round2";
 		$lv=$this->getServer()->getLevelByName($this->level);
 		$SignVector3 = $this->tile;
-		$lv->getTile($SignVector3)->setText("僵尸围城","游戏状态:已开始|第二轮","当前玩家数量:".count($this->players),"当前僵尸数量:".count($this->zombie));
+		$lv->getTile($SignVector3)->setText("ZombieCity","Status:Started|Round2","Player left:".count($this->players),"Steleton left:".count($this->zombie));
 		//$lv->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:0","作者:Zzm");	
 		$this->gametime = 60;
 		$this->spawnSkeleton();
@@ -1733,7 +1731,7 @@ class ZombieCity extends PluginBase implements Listener{
 		}
 		if(count($this->Skeleton) <= 0){
 		if($this->gameststus == "round2"){
-		Server::getInstance()->broadcastMessage(TextFormat::YELLOW."游戏结束，人类胜利！");
+		Server::getInstance()->broadcastMessage(TextFormat::YELLOW."Game finished,Human win!");
 		$this->Skeleton = array();
 		foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
@@ -1746,13 +1744,13 @@ class ZombieCity extends PluginBase implements Listener{
 		$this->gameststus = "prepare";
 		$lv=$this->getServer()->getLevelByName($this->level);
 		$SignVector3 = $this->tile;
-		$lv->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:0","作者:Zzm");	
+		$lv->getTile($SignVector3)->setText("ZombieCity","Status:Waiting","Player joined:0","Author:Zzm");	
 		//$this->gametime = 60;
 		}
 		}
 		if(count($this->players) <= 0){
 		if($this->gameststus == "start"){
-		Server::getInstance()->broadcastMessage(TextFormat::YELLOW."游戏结束，人类失败!原因：人类被团灭");
+		Server::getInstance()->broadcastMessage(TextFormat::YELLOW."Game finished!Human all died");
 			foreach($this->zombie as $zoms){
 				$level=$this->getServer()->getLevelByName($zoms['level']);
 				$level->removeEntity($level->getEntity($zoms['ID']));
@@ -1760,7 +1758,7 @@ class ZombieCity extends PluginBase implements Listener{
 				
 				$level=$this->getServer()->getLevelByName($this->level);
 				$SignVector3 = $this->tile;
-				$level->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:0","作者:Zzm");
+				$level->getTile($SignVector3)->setText("ZombieCity","Status:Waiting","Player joined:0","Author:Zzm");
 		$this->zombie = array();
 		$this->players = array();
 		$this->gameststus = "prepare";
@@ -1769,7 +1767,7 @@ class ZombieCity extends PluginBase implements Listener{
 		$this->gametime = $this->gametime - 1;
 		if($this->gametime <= 0){
 			if(count($this->zombie) > 0 or count($this->Skeleton) > 0){
-				Server::getInstance()->broadcastMessage(TextFormat::YELLOW."游戏结束，人类失败!原因：超时");
+				Server::getInstance()->broadcastMessage(TextFormat::YELLOW."Game finished,human lose, Reason: Timeout!");
 				foreach($this->zombie as $zoms){
 				$level=$this->getServer()->getLevelByName($zoms['level']);
 				$level->removeEntity($level->getEntity($zoms['ID']));
@@ -1786,14 +1784,14 @@ class ZombieCity extends PluginBase implements Listener{
 				$this->gameststus = "prepare";
 				$level = $this->getServer()->getLevelByName($this->level);
 				$SignVector3 = $this->tile;
-				$level->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:0","作者:Zzm");
+				$level->getTile($SignVector3)->setText("ZombieCity","Status:Waiting","Player joined:0","Author:Zzm");
 			}
 		}
 		if($this->gametime >= 0 and $this->gametime <=5 ){
 			foreach($this->players as $pl){
 				$p = $this->getServer()->getPlayer($pl["id"]);
 				if($p != false){
-				$p->sendtip("游戏还有".$this->gametime."秒结束，剩余僵尸数量：".count($this->zombie));
+				$p->sendtip("Game will stop in".$this->gametime."seconds,Zombies left:".count($this->zombie));
 				}
 			}
 		}
@@ -1819,13 +1817,13 @@ class ZombieCity extends PluginBase implements Listener{
 					$this->config->set("tile",$this->tile);
 					$this->config->save();
 					$this->SetStatus[$username]++;
-					$player->sendtip(TextFormat::GREEN." * 状态牌 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-					$player->sendtip(TextFormat::GREEN." * 请点击生成点1");
+					$player->sendtip(TextFormat::GREEN." * Status sign: x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+					$player->sendtip(TextFormat::GREEN." * Please touch point1");
 					$SignVector3 = new Vector3($block->x,$block->y,$block->z);
-					$player->getLevel()->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:0","作者:Zzm");
+					$player->getLevel()->getTile($SignVector3)->setText("ZombieCity","Status:Waiting","Player joined:0","Author:Zzm");
 					break;
 					}else{
-					$player->sendtip(TextFormat::RED." * 点击的不是木牌！");
+					$player->sendtip(TextFormat::RED." * It isn't a sign!");
 					break;
 					}
 				case 1:
@@ -1838,8 +1836,8 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("zpos1",$this->zpos1);
 							$this->config->save();
 							$this->SetStatus[$username]++;
-							$player->sendtip(TextFormat::GREEN." * 生成点1 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-					$player->sendtip(TextFormat::GREEN." * 请点击生成点2");
+							$player->sendtip(TextFormat::GREEN." * Point1 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+					$player->sendtip(TextFormat::GREEN." * Please touch point2");
 					break;
 				case 2:
 				 $this->zpos2 = array(
@@ -1851,8 +1849,8 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("zpos2",$this->zpos2);
 							$this->config->save();
 							$this->SetStatus[$username]++;
-							$player->sendtip(TextFormat::GREEN." * 生成点2 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-					$player->sendtip(TextFormat::GREEN." * 请点击生成点3");
+							$player->sendtip(TextFormat::GREEN." * Point2 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+					$player->sendtip(TextFormat::GREEN." * Please touch point3");
 					break;	
 				case 3:
 				 $this->zpos3 = array(
@@ -1864,8 +1862,8 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("zpos3",$this->zpos3);
 							$this->config->save();
 							$this->SetStatus[$username]++;
-							$player->sendtip(TextFormat::GREEN." * 生成点3 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-					$player->sendtip(TextFormat::GREEN." * 请点击生成点4");
+							$player->sendtip(TextFormat::GREEN." * Point3 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+					$player->sendtip(TextFormat::GREEN." * Please touch point4");
 					break;	
 				case 4:
 				 $this->zpos4= array(
@@ -1877,8 +1875,8 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("zpos4",$this->zpos4);
 							$this->config->save();
 							$this->SetStatus[$username]++;
-							$player->sendtip(TextFormat::GREEN." * 生成点4 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-					$player->sendtip(TextFormat::GREEN." * 请点击生成点5");
+							$player->sendtip(TextFormat::GREEN." * Point4 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+					$player->sendtip(TextFormat::GREEN." * Please touch point5");
 					break;	
 				case 5:
 				 $this->zpos5 = array(
@@ -1890,8 +1888,8 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("zpos5",$this->zpos5);
 							$this->config->save();
 						$this->SetStatus[$username]++;
-						$player->sendtip(TextFormat::GREEN." * 生成点5 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-						$player->sendtip(TextFormat::GREEN." * 请点击起始点");
+						$player->sendtip(TextFormat::GREEN." * Point5 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+						$player->sendtip(TextFormat::GREEN." * Please touch Start point");
 						break;
 				case 6:
 				 $this->spos = array(
@@ -1903,8 +1901,8 @@ class ZombieCity extends PluginBase implements Listener{
 						$this->config->set("spos",$this->spos);
 						$this->config->save();
 						$this->SetStatus[$username]++;
-						$player->sendtip(TextFormat::GREEN." * 起始点 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-						$player->sendtip(TextFormat::GREEN." * 请点击等待点1(加入游戏后等待区)");
+						$player->sendtip(TextFormat::GREEN." * Start point x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+						$player->sendtip(TextFormat::GREEN." * Please touch wait point");
 						break;	
 				case 7:
 				 $this->waitpos1 = array(
@@ -1916,8 +1914,8 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("waitpos1",$this->waitpos1);
 							$this->config->save();
 						$this->SetStatus[$username]++;
-						$player->sendtip(TextFormat::GREEN." * 等待点1 x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
-						$player->sendtip(TextFormat::GREEN." * 请点击等待点2(退出时传送区域)");
+						$player->sendtip(TextFormat::GREEN." * Wait point x=".$block->x." y=".$block->y." z=".$block->z." level=".$levelname);
+						$player->sendtip(TextFormat::GREEN." * Please touch quit point");
 						break;
 				case 8:
 				 $this->waitpos2 = array(
@@ -1929,7 +1927,7 @@ class ZombieCity extends PluginBase implements Listener{
 							$this->config->set("waitpos2",$this->waitpos2);
 							$this->config->save();			
 						unset($this->SetStatus[$username]);
-						Server::getInstance()->broadcastMessage(TextFormat::YELLOW." * 僵尸围城 全部设置完成 , 可以进行游戏了!");
+						Server::getInstance()->broadcastMessage(TextFormat::YELLOW." * ZombieCity * Set done! you can play now");
 			$this->tile = new Vector3($this->tile["x"],$this->tile["y"],$this->tile["z"]);
 			$this->zpos1 = new Vector3($this->zpos1["x"],$this->zpos1["y"],$this->zpos1["z"]);
 			$this->zpos2 = new Vector3($this->zpos2["x"],$this->zpos2["y"],$this->zpos2["z"]);
@@ -1951,8 +1949,8 @@ class ZombieCity extends PluginBase implements Listener{
                 return;
             }
             $sign = $sign->getText();
-            if($sign[0]== '加入游戏'){
-				if($sign[1]== '僵尸围城'){
+            if($sign[0]== 'Join game'){
+				if($sign[1]== 'ZombieCity'){
 					if($this->gameststus == "prepare"){
 						if(!isset($this->players[$event->getPlayer()->getName()])){		
 						$this->players[$event->getPlayer()->getName()] = array(
@@ -1960,43 +1958,43 @@ class ZombieCity extends PluginBase implements Listener{
 						"Isonline"=>1,
 						"kill"=>0,
 						);
-						$event->getPlayer()->sendtip("加入游戏成功！");
-						Server::getInstance()->broadcastMessage(TextFormat::GREEN."玩家".$event->getPlayer()->getName()."加入了游戏！");
-						Server::getInstance()->broadcastMessage(TextFormat::GREEN."还需要".(5 - count($this->players))."个玩家才能开始游戏！");
+						$event->getPlayer()->sendtip("join successed");
+						Server::getInstance()->broadcastMessage(TextFormat::GREEN."Player".$event->getPlayer()->getName()."joined the game!");
+						Server::getInstance()->broadcastMessage(TextFormat::GREEN."Game will start with ".(5 - count($this->players))." more player");
 						//$event->getPlayer()->setPostion();
 						$event->getPlayer()->teleport($this->waitpos1);
 						$level=$this->getServer()->getLevelByName($this->level);
 						$SignVector3 = $this->tile;
-						$player->getLevel()->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:".count($this->players),"作者:Zzm");
+						$player->getLevel()->getTile($SignVector3)->setText("ZombieCity","Status:Waiting","Player left:".count($this->players),"Author:Zzm");
 						
 						}else{
-						$event->getPlayer()->sendtip("你已经加入游戏了！");
+						$event->getPlayer()->sendtip("You have already oined the game!");
 						}
 					}else{
-					$event->getPlayer()->sendtip("现在不能加入游戏。。");
+					$event->getPlayer()->sendtip("You can't join now!");
 					}
 				}
 			}
-			if($sign[0]== '退出游戏'){
-				if($sign[1]== '僵尸围城'){
+			if($sign[0]== 'Quit game'){
+				if($sign[1]== 'ZombieCity'){
 					if($this->gameststus == "prepare"){
 						if(!isset($this->players[$event->getPlayer()->getName()])){
-						$event->getPlayer()->sendtip("你不在游戏队伍中！");
+						$event->getPlayer()->sendtip("You are not in teams");
 						}else{
 						//var_dump($event->getEntity()->getId());
 						if(isset($this->players[$event->getPlayer()->getName()])){	
 						unset($this->players[$event->getPlayer()->getName()]);
 						}
-						$event->getPlayer()->sendtip("你已经成功的退出了游戏！");
-						Server::getInstance()->broadcastMessage(TextFormat::RED."玩家".$event->getPlayer()->getName()."退出了游戏！");
+						$event->getPlayer()->sendtip("Quit success");
+						Server::getInstance()->broadcastMessage(TextFormat::RED."Player ".$event->getPlayer()->getName()." quit the game");
 						$level=$this->getServer()->getLevelByName($this->level);
 						$SignVector3 = $this->tile;
-						$player->getLevel()->getTile($SignVector3)->setText("僵尸围城","游戏状态:未开始","当前玩家数量:".count($this->players),"作者:Zzm");
+						$player->getLevel()->getTile($SignVector3)->setText("ZombieCity","Status:Waiting","Player joined:".count($this->players),"Author:Zzm");
 						$event->getPlayer()->teleport($this->waitpos2);
 						//$event->getPlayer()->setPostion();
 						}
 					}else{
-					$event->getPlayer()->sendtip("现在不能退出游戏。。");
+					$event->getPlayer()->sendtip("You can't quit now!");
 					}
 				}
 			}
@@ -2008,7 +2006,7 @@ class ZombieCity extends PluginBase implements Listener{
 	if(isset($this->players[$event->getPlayer()->getName()])){	
 	$p = &$this->players[$event->getPlayer()->getName()];
 	$p['Isonline'] = 0;
-	Server::getInstance()->broadcastMessage(TextFormat::RED."玩家".$event->getPlayer()->getName()."掉线了");
+	Server::getInstance()->broadcastMessage(TextFormat::RED."Player ".$event->getPlayer()->getName()." disconnect form the game");
 	}
 	}
 	
@@ -2017,7 +2015,7 @@ class ZombieCity extends PluginBase implements Listener{
 	if(isset($this->players[$event->getPlayer()->getName()])){	
 	$p = &$this->players[$event->getPlayer()->getName()];
 	$p['Isonline'] = 1;
-	Server::getInstance()->broadcastMessage(TextFormat::RED."玩家".$event->getPlayer()->getName()."重连了");
+	Server::getInstance()->broadcastMessage(TextFormat::RED."Player ".$event->getPlayer()->getName()."connected again");
 	$pl->teleport($this->spos);
 	}
 	}
